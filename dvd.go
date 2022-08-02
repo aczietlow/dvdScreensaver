@@ -20,6 +20,8 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println(term.IsTerminal(int(os.Stdin.Fd())))
+
 	// poor man's kill switch
 	//c := make([]byte, 1)
 	//os.Stdin.Read(c)
@@ -30,8 +32,7 @@ func main() {
 	//
 	//}
 
-	terminal := term.NewTerminal(os.Stdin, "")
-	fmt.Println("user name?")
+	terminal := term.NewTerminal(os.Stdin, ``)
 	line, err := terminal.ReadLine()
 	if err != nil {
 		panic(err)
