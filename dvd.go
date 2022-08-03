@@ -82,22 +82,26 @@ func main() {
 	for {
 		s.Show()
 
-		// Poll event
-		//ev := s.PollEvent()
-		//switch ev := ev.(type) {
-		//case *tcell.EventKey:
-		//	if ev.Key() == tcell.KeyEscape || ev.Key() == tcell.KeyCtrlC {
-		//		quit()
-		//	} else if ev.Key() == tcell.KeyCtrlL {
-		//		s.Sync()
-		//	} else if ev.Rune() == 'C' || ev.Rune() == 'c' {
-		//		s.Clear()
-		//	}
-		//}
-		time.Sleep(1 * time.Second)
+		time.Sleep(500 * time.Millisecond)
 		s.Clear()
 		emitString(s, fmt.Sprintf("%v, %v", w, h), 10, 0, defStyle)
 		emitString(s, fmt.Sprintf("%v, %v", x, y), 0, 0, defStyle)
+
+		// Poll event
+		ev := s.PollEvent()
+
+		// Process event
+		switch ev := ev.(type) {
+		case *tcell.EventResize:
+			s.Sync()
+		case *tcell.EventKey:
+			if ev.Key() == tcell.KeyEscape || ev.Key() == tcell.KeyCtrlC {
+				quit()
+			} else if ev.Key() == tcell.KeyCtrlL {
+				s.Sync()
+			}
+		}
+
 		bounce(s, x, y)
 		if edgeDetected(x, y, w, h) {
 			break
@@ -127,28 +131,8 @@ func main() {
 			y--
 		}
 
+		// Post an event to the queue to continue the flow.
+		s.PostEvent(tcell.NewEventInterrupt(nil))
 	}
 
-	// Poll for events to capture keyboard input.
-	for {
-		// Update screen
-		s.Show()
-
-		// Poll event
-		ev := s.PollEvent()
-
-		// Process event
-		switch ev := ev.(type) {
-		case *tcell.EventResize:
-			s.Sync()
-		case *tcell.EventKey:
-			if ev.Key() == tcell.KeyEscape || ev.Key() == tcell.KeyCtrlC {
-				quit()
-			} else if ev.Key() == tcell.KeyCtrlL {
-				s.Sync()
-			} else if ev.Rune() == 'C' || ev.Rune() == 'c' {
-				s.Clear()
-			}
-		}
-	}
 }
