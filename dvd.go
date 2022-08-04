@@ -12,7 +12,7 @@ import (
 const (
 	dvdChar      = "\xF0\x9F\x93\x80"
 	confettiChar = "*"
-	sleep        = 300
+	sleep        = 200
 	duration     = 10
 )
 

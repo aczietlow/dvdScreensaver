@@ -11,6 +11,7 @@ go build
 ```
 
 `ctl-c` or `esc` to exit
+
 `c` to skip to the good part
 
 ## Why
