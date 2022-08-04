@@ -10,6 +10,9 @@ go build
 ./dvdScreensaver
 ```
 
+`ctl-c` or `esc` to exit
+`c` to skip to the good part
+
 ## Why
 
 Because I could.
